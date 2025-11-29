@@ -95,5 +95,6 @@ public class Main {
         // Create and run the manager
         HackathonManager manager = new HackathonManager();
         manager.run();
+
     }
 }

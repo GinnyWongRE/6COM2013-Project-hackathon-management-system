@@ -15,58 +15,150 @@ public class TeamList {
 
     // CSV Reading Method
     public void loadTeamsFromCSV(String filename) {
+        int lineNumber = 0;
+        int successfulTeams = 0;
+        int errorCount = 0;
+
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
-            boolean isFirstLine = true;
+            Set<Integer> usedTeamNumbers = new HashSet<>(); // Track team numbers for duplicates
 
             while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false; // Skip header row
+                lineNumber++;
+
+                // Skip empty lines and header
+                if (line.trim().isEmpty()) {
                     continue;
                 }
+                if (lineNumber == 1) {
+                    continue; // Skip header row
+                }
 
-                String[] data = line.split(",");
-                if (data.length >= 8) { // Ensure we have enough data
-                    // Parse team basic info
-                    int teamNumber = Integer.parseInt(data[0].trim());
+                try {
+                    String[] data = line.split(",");
+
+                    // Error Check 1: Validate minimum required fields
+                    if (data.length < 8) {
+                        System.err.println("Error on line " + lineNumber + ": Insufficient data fields. Expected at least 8, found " + data.length);
+                        errorCount++;
+                        continue;
+                    }
+
+                    // Error Check 2: Validate team number
+                    int teamNumber;
+                    try {
+                        teamNumber = Integer.parseInt(data[0].trim());
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error on line " + lineNumber + ": Invalid team number '" + data[0] + "'");
+                        errorCount++;
+                        continue;
+                    }
+
+                    // Error Check 3: Check for duplicate team numbers
+                    if (usedTeamNumbers.contains(teamNumber)) {
+                        System.err.println("Error on line " + lineNumber + ": Duplicate team number " + teamNumber);
+                        errorCount++;
+                        continue;
+                    }
+                    usedTeamNumbers.add(teamNumber);
+
+                    // Error Check 4: Validate required string fields
                     String teamName = data[1].trim();
                     String university = data[2].trim();
                     String categoryName = data[3].trim();
+                    String leaderName = data[4].trim();
+                    String leaderEmail = data[5].trim();
 
-                    // Create category
-                    Category category = new Category(teams.size() + 1, categoryName);
-
-                    // Create team leader
-                    Competitor leader = new Competitor(
-                            Integer.parseInt(data[6].trim()), // leader student ID
-                            data[4].trim(), // leader name
-                            data[5].trim(), // leader email
-                            LocalDate.parse(data[7].trim()), // leader DOB
-                            true
-                    );
-
-                    // Parse scores (remaining columns)
-                    int[] scores = new int[data.length - 8];
-                    for (int i = 8; i < data.length; i++) {
-                        scores[i - 8] = Integer.parseInt(data[i].trim());
+                    if (teamName.isEmpty() || university.isEmpty() || categoryName.isEmpty() ||
+                            leaderName.isEmpty() || leaderEmail.isEmpty()) {
+                        System.err.println("Error on line " + lineNumber + ": Required field is empty");
+                        errorCount++;
+                        continue;
                     }
 
-                    // Create team with empty members array for now (simplified)
-                    Competitor[] members = {}; // We'll handle multiple members in enhancement
+                    // Error Check 5: Validate leader student ID
+                    int leaderStudentID;
+                    try {
+                        leaderStudentID = Integer.parseInt(data[6].trim());
+                        if (leaderStudentID <= 0) {
+                            throw new NumberFormatException("Student ID must be positive");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error on line " + lineNumber + ": Invalid student ID '" + data[6] + "'");
+                        errorCount++;
+                        continue;
+                    }
 
-                    HackathonTeam team = new HackathonTeam(
-                            teamNumber, teamName, university, category, leader, members, scores
-                    );
+                    // Error Check 6: Validate date of birth
+                    LocalDate leaderDOB;
+                    try {
+                        leaderDOB = LocalDate.parse(data[7].trim());
+                        // Additional check: leader should be at least 16 years old
+                        LocalDate minDOB = LocalDate.now().minusYears(16);
+                        if (leaderDOB.isAfter(minDOB)) {
+                            System.err.println("Warning on line " + lineNumber + ": Leader is under 16 years old");
+                            // Continue anyway, just a warning
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error on line " + lineNumber + ": Invalid date format '" + data[7] + "'. Expected format: YYYY-MM-DD");
+                        errorCount++;
+                        continue;
+                    }
 
+                    // Error Check 7: Validate scores
+                    int[] scores = new int[data.length - 8];
+                    boolean validScores = true;
+
+                    if (scores.length < 4 || scores.length > 6) {
+                        System.err.println("Error on line " + lineNumber + ": Invalid number of scores. Expected 4-6, found " + scores.length);
+                        errorCount++;
+                        continue;
+                    }
+
+                    for (int i = 8; i < data.length; i++) {
+                        try {
+                            int score = Integer.parseInt(data[i].trim());
+                            if (score < 1 || score > 5) {
+                                System.err.println("Error on line " + lineNumber + ": Score out of range (1-5): " + score);
+                                validScores = false;
+                                break;
+                            }
+                            scores[i - 8] = score;
+                        } catch (NumberFormatException e) {
+                            System.err.println("Error on line " + lineNumber + ": Invalid score format '" + data[i] + "'");
+                            validScores = false;
+                            break;
+                        }
+                    }
+
+                    if (!validScores) {
+                        errorCount++;
+                        continue;
+                    }
+
+                    // All validations passed - create the team
+                    Category category = new Category(teams.size() + 1, categoryName);
+                    Competitor leader = new Competitor(leaderStudentID, leaderName, leaderEmail, leaderDOB, true);
+                    Competitor[] members = {}; // Simplified for Stage 5
+
+                    HackathonTeam team = new HackathonTeam(teamNumber, teamName, university, category, leader, members, scores);
                     teams.add(team);
+                    successfulTeams++;
+
+                } catch (Exception e) {
+                    System.err.println("Unexpected error processing line " + lineNumber + ": " + e.getMessage());
+                    errorCount++;
                 }
             }
-            System.out.println("Successfully loaded " + teams.size() + " teams from " + filename);
+
+            // Summary report
+            System.out.println("CSV loading completed:");
+            System.out.println("  - Successfully loaded: " + successfulTeams + " teams");
+            System.out.println("  - Errors encountered: " + errorCount);
+            System.out.println("  - Total teams in system: " + teams.size());
 
         } catch (IOException e) {
             System.err.println("Error reading CSV file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.err.println("Error parsing number in CSV: " + e.getMessage());
         }
     }
 

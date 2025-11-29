@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -29,12 +31,71 @@ public class HackathonManager {
         scanner.close();
     }
 
+//    /**
+//     * Load team data from CSV file
+//     */
+//    private void loadTeamData() {
+//        teamList.loadTeamsFromCSV("teams.csv");
+//        System.out.println("Total teams loaded: " + teamList.getTotalTeams() + "\n");
+//    }
+
     /**
-     * Load team data from CSV file
+     * Load team data from CSV file with flexible file location
      */
     private void loadTeamData() {
-        teamList.loadTeamsFromCSV("teams.csv");
+        String[] possiblePaths = {
+                "teams.csv",                    // Current directory
+                "data/teams.csv",               // data subfolder
+                "../teams.csv",                 // Parent directory
+                "src/teams.csv"                 // src folder (common in IDEs)
+        };
+
+        boolean fileLoaded = false;
+
+        for (String filePath : possiblePaths) {
+            File file = new File(filePath);
+            if (file.exists()) {
+                teamList.loadTeamsFromCSV(filePath);
+                System.out.println("Loaded teams from: " + filePath);
+                fileLoaded = true;
+                break;
+            }
+        }
+
+        if (!fileLoaded) {
+            System.out.println("ERROR: Could not find teams.csv file!");
+            System.out.println("Please make sure teams.csv is in one of these locations:");
+            for (String path : possiblePaths) {
+                System.out.println("  - " + path);
+            }
+            System.out.println("\nCreating a sample file for demonstration...");
+            createSampleCSVFile(); // We'll implement this as fallback
+        }
+
         System.out.println("Total teams loaded: " + teamList.getTotalTeams() + "\n");
+    }
+
+    /**
+     * Create a sample CSV file if none exists (fallback)
+     */
+    private void createSampleCSVFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("teams.csv"))) {
+            // Write the CSV header
+            writer.println("teamNumber,teamName,university,category,leaderName,leaderEmail,leaderStudentID,leaderDOB,score1,score2,score3,score4,score5");
+
+            // Write sample data
+            writer.println("100,Team Innovate,University of Malaya,Web Development,Ahmad Faris,ahmad@um.edu.my,10001,2000-05-15,4,5,4,5,5");
+            writer.println("101,Cyber Titans,Universiti Teknologi Malaysia,Cybersecurity,Sarah Lim,sarah@utm.edu.my,20001,1999-12-08,3,4,3,4,4");
+            writer.println("102,AI Pioneers,Universiti Kebangsaan Malaysia,Artificial Intelligence,David Wong,david@ukm.edu.my,30001,2000-09-18,5,5,5,4,5");
+
+            System.out.println("Sample teams.csv created with 3 teams.");
+
+            // Now load the newly created file
+            teamList.loadTeamsFromCSV("teams.csv");
+
+        } catch (IOException e) {
+            System.err.println("Failed to create sample file: " + e.getMessage());
+        }
     }
 
     /**
@@ -51,7 +112,8 @@ public class HackathonManager {
             System.out.println("4. Display Summary Statistics");
             System.out.println("5. Display Score Frequency");
             System.out.println("6. Exit");
-            System.out.print("Choose an option (1-6): ");
+            System.out.println("7. Test Error Checking");
+            System.out.print("Choose an option (1-7): ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
@@ -75,6 +137,9 @@ public class HackathonManager {
                     case 6:
                         running = false;
                         System.out.println("Thank you for using Hackathon Management System!");
+                        break;
+                    case 7:
+                        testErrorChecking();
                         break;
                     default:
                         System.out.println("Invalid option. Please choose 1-6.\n");
@@ -190,4 +255,15 @@ public class HackathonManager {
         HackathonManager manager = new HackathonManager();
         manager.run();
     }
+    private void testErrorChecking() {
+        System.out.println("\n=== TESTING ERROR CHECKING ===");
+
+        TeamList testTeamList = new TeamList();
+        testTeamList.loadTeamsFromCSV("teams_with_errors.csv");
+
+        System.out.println("\nThis demonstrates the error checking capabilities.");
+        System.out.println("Check the error messages above to see how invalid data is handled.");
+        waitForUser();
+    }
+
 }
