@@ -68,11 +68,11 @@ public class HackathonTeam {
         this.teamLeader = teamLeader;
     }
 
-    public int[] getScores() {
+    public int[] getScoreArray() {
         return scores;
     }
 
-    public void setScores(int[] scores) {
+    public void setScoreArray(int[] scores) {
         this.scores = scores;
     }
 

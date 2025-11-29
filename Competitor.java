@@ -7,12 +7,12 @@ public class Competitor {
     private LocalDate dateOfBirth;
     private boolean isLeader;
 
-    public Competitor(int studentID, String name, String email, boolean isLeader, LocalDate dateOfBirth) {
+    public Competitor(int studentID, String name, String email, LocalDate dateOfBirth, boolean isLeader) {
         this.studentID = studentID;
         this.name = name;
         this.email = email;
-        this.isLeader = isLeader;
         this.dateOfBirth = dateOfBirth;
+        this.isLeader = isLeader;
     }
 
     public int getStudentID() {
