@@ -120,5 +120,150 @@ public class TeamList {
         return highest;
     }
 
-    // More methods to be added for statistics and frequency...
+    /**
+     * Get the team with the lowest overall score
+     */
+    public HackathonTeam getLowestScoringTeam() {
+        if (teams.isEmpty()) return null;
+
+        HackathonTeam lowest = teams.get(0);
+        for (HackathonTeam team : teams) {
+            if (team.getOverallScore() < lowest.getOverallScore()) {
+                lowest = team;
+            }
+        }
+        return lowest;
+    }
+
+    /**
+     * Calculate average overall score across all teams
+     */
+    public double getAverageOverallScore() {
+        if (teams.isEmpty()) return 0;
+
+        double total = 0;
+        for (HackathonTeam team : teams) {
+            total += team.getOverallScore();
+        }
+        return Math.round((total / teams.size()) * 10) / 10.0;
+    }
+
+    /**
+     * Get minimum overall score across all teams
+     */
+    public double getMinOverallScore() {
+        if (teams.isEmpty()) return 0;
+
+        double min = teams.get(0).getOverallScore();
+        for (HackathonTeam team : teams) {
+            if (team.getOverallScore() < min) {
+                min = team.getOverallScore();
+            }
+        }
+        return min;
+    }
+
+    /**
+     * Get maximum overall score across all teams
+     */
+    public double getMaxOverallScore() {
+        if (teams.isEmpty()) return 0;
+
+        double max = teams.get(0).getOverallScore();
+        for (HackathonTeam team : teams) {
+            if (team.getOverallScore() > max) {
+                max = team.getOverallScore();
+            }
+        }
+        return max;
+    }
+
+    /**
+     * Generate frequency report of individual scores (1-5)
+     * Counts how many times each score appears across all teams and all criteria
+     */
+    public Map<Integer, Integer> getScoreFrequency() {
+        Map<Integer, Integer> frequency = new TreeMap<>();
+
+        // Initialize frequency map with scores 1-5
+        for (int i = 1; i <= 5; i++) {
+            frequency.put(i, 0);
+        }
+
+        // Count occurrences of each score
+        for (HackathonTeam team : teams) {
+            int[] scores = team.getScoreArray();
+            for (int score : scores) {
+                if (score >= 1 && score <= 5) {
+                    frequency.put(score, frequency.get(score) + 1);
+                }
+            }
+        }
+
+        return frequency;
+    }
+
+    /**
+     * Get summary statistics as a formatted string
+     */
+    public String getSummaryStatistics() {
+        StringBuilder stats = new StringBuilder();
+        stats.append("=== SUMMARY STATISTICS ===\n");
+        stats.append("Total Teams: ").append(getTotalTeams()).append("\n");
+        stats.append("Average Overall Score: ").append(getAverageOverallScore()).append("\n");
+        stats.append("Highest Overall Score: ").append(getMaxOverallScore()).append("\n");
+        stats.append("Lowest Overall Score: ").append(getMinOverallScore()).append("\n");
+
+        // Additional statistics
+        int totalScores = 0;
+        for (HackathonTeam team : teams) {
+            totalScores += team.getScoreArray().length;
+        }
+        stats.append("Total Individual Scores: ").append(totalScores).append("\n");
+
+        return stats.toString();
+    }
+
+    /**
+     * Generate complete final report with all required components
+     */
+    public String generateFinalReport() {
+        StringBuilder report = new StringBuilder();
+
+        // 1. Table of teams with full details
+        report.append(generateFullReport()).append("\n");
+
+        // 2. Team with highest overall score
+        HackathonTeam highest = getHighestScoringTeam();
+        if (highest != null) {
+            report.append("=== HIGHEST SCORING TEAM ===\n");
+            report.append(highest.getFullDetails()).append("\n\n");
+        }
+
+        // 3. Summary statistics
+        report.append(getSummaryStatistics()).append("\n");
+
+        // 4. Frequency report
+        report.append("=== SCORE FREQUENCY REPORT ===\n");
+        Map<Integer, Integer> frequency = getScoreFrequency();
+        report.append("Score | Frequency\n");
+        report.append("------|----------\n");
+        for (Map.Entry<Integer, Integer> entry : frequency.entrySet()) {
+            report.append(entry.getKey()).append("     | ").append(entry.getValue()).append("\n");
+        }
+
+        return report.toString();
+    }
+
+    /**
+     * Write report to text file
+     */
+    public void writeReportToFile(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            writer.print(generateFinalReport());
+            System.out.println("Report successfully written to: " + filename);
+        } catch (IOException e) {
+            System.err.println("Error writing report to file: " + e.getMessage());
+        }
+    }
 }
