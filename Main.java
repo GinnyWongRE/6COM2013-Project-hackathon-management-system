@@ -88,5 +88,12 @@ public class Main {
         System.out.println("Team 100 Leader: " + leader100.toString());
 
         System.out.println("\n=== STAGE 4 TEST COMPLETED ===");
+
+        System.out.println("=== HACKATHON MANAGEMENT SYSTEM - STAGE 5 ===");
+        System.out.println("Starting Hackathon Manager...\n");
+
+        // Create and run the manager
+        HackathonManager manager = new HackathonManager();
+        manager.run();
     }
 }
