@@ -7,7 +7,7 @@ import java.io.*;
  * Handles team storage, searching, and reporting operations
  */
 public class TeamList {
-    private ArrayList<HackathonTeam> teams;
+    private ArrayList<Team> teams;
 
     public TeamList() {
         this.teams = new ArrayList<>();
@@ -55,10 +55,18 @@ public class TeamList {
 
                     // Create team with empty members array for now
                     Competitor[] members = {};
+                    Team team;
 
-                    HackathonTeam team = new HackathonTeam(
-                            teamNumber, teamName, university, category, leader, members, scores
-                    );
+//                    Team team = new Team(
+//                            teamNumber, teamName, university, category, leader, members, scores
+//                    );
+
+                    // Create appropriate subclass based on category
+                    if (categoryName.equalsIgnoreCase("Artificial Intelligence")) {
+                        team = new AITeam(teamNumber, teamName, university, category, leader, members, scores);
+                    } else {
+                        team = new WebDevelopmentTeam(teamNumber, teamName, university, category, leader, members, scores);
+                    }
 
                     teams.add(team);
                 }
@@ -73,7 +81,7 @@ public class TeamList {
     }
 
     // Basic ArrayList operations
-    public void addTeam(HackathonTeam team) {
+    public void addTeam(Team team) {
         teams.add(team);
     }
 
@@ -81,8 +89,8 @@ public class TeamList {
         return teams.removeIf(team -> team.getTeamNumber() == teamNumber);
     }
 
-    public HackathonTeam getTeamByID(int teamID) {
-        for (HackathonTeam team : teams) {
+    public Team getTeamByID(int teamID) {
+        for (Team team : teams) {
             if (team.getTeamNumber() == teamID) {
                 return team;
             }
@@ -90,7 +98,7 @@ public class TeamList {
         return null;
     }
 
-    public ArrayList<HackathonTeam> getAllTeams() {
+    public ArrayList<Team> getAllTeams() {
         return new ArrayList<>(teams); // Return copy to prevent external modification
     }
 
@@ -103,18 +111,18 @@ public class TeamList {
         StringBuilder report = new StringBuilder();
         report.append("=== HACKATHON TEAMS FULL REPORT ===\n\n");
 
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             report.append(team.getFullDetails()).append("\n\n");
         }
 
         return report.toString();
     }
 
-    public HackathonTeam getHighestScoringTeam() {
+    public Team getHighestScoringTeam() {
         if (teams.isEmpty()) return null;
 
-        HackathonTeam highest = teams.get(0);
-        for (HackathonTeam team : teams) {
+        Team highest = teams.get(0);
+        for (Team team : teams) {
             if (team.getOverallScore() > highest.getOverallScore()) {
                 highest = team;
             }
@@ -125,11 +133,11 @@ public class TeamList {
     /**
      * Get the team with the lowest overall score
      */
-    public HackathonTeam getLowestScoringTeam() {
+    public Team getLowestScoringTeam() {
         if (teams.isEmpty()) return null;
 
-        HackathonTeam lowest = teams.get(0);
-        for (HackathonTeam team : teams) {
+        Team lowest = teams.get(0);
+        for (Team team : teams) {
             if (team.getOverallScore() < lowest.getOverallScore()) {
                 lowest = team;
             }
@@ -144,7 +152,7 @@ public class TeamList {
         if (teams.isEmpty()) return 0;
 
         double total = 0;
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             total += team.getOverallScore();
         }
         return Math.round((total / teams.size()) * 10) / 10.0;
@@ -157,7 +165,7 @@ public class TeamList {
         if (teams.isEmpty()) return 0;
 
         double min = teams.get(0).getOverallScore();
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             if (team.getOverallScore() < min) {
                 min = team.getOverallScore();
             }
@@ -172,7 +180,7 @@ public class TeamList {
         if (teams.isEmpty()) return 0;
 
         double max = teams.get(0).getOverallScore();
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             if (team.getOverallScore() > max) {
                 max = team.getOverallScore();
             }
@@ -193,7 +201,7 @@ public class TeamList {
         }
 
         // Count occurrences of each score
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             int[] scores = team.getScoreArray();
             for (int score : scores) {
                 if (score >= 1 && score <= 5) {
@@ -218,7 +226,7 @@ public class TeamList {
 
         // Additional statistics
         int totalScores = 0;
-        for (HackathonTeam team : teams) {
+        for (Team team : teams) {
             totalScores += team.getScoreArray().length;
         }
         stats.append("Total Individual Scores: ").append(totalScores).append("\n");
@@ -236,7 +244,7 @@ public class TeamList {
         report.append(generateFullReport()).append("\n");
 
         // 2. Team with highest overall score
-        HackathonTeam highest = getHighestScoringTeam();
+        Team highest = getHighestScoringTeam();
         if (highest != null) {
             report.append("=== HIGHEST SCORING TEAM ===\n");
             report.append(highest.getFullDetails()).append("\n\n");

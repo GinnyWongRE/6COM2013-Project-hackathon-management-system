@@ -1,16 +1,19 @@
 import java.util.Arrays;
+// File: Team.java (formerly HackathonTeam.java)
+/**
+ * Abstract Team superclass containing common attributes and methods
+ * Specific team types will extend this class
+ */
+public abstract class Team {
+    protected int teamNumber;
+    protected String teamName;
+    protected String university;
+    protected Category category;
+    protected Competitor teamLeader;
+    protected Competitor[] teamMember;
+    protected int[] scores;
 
-public class HackathonTeam {
-    private int teamNumber;
-    private String teamName;
-    private String university;
-    private Category category;
-    private Competitor teamLeader;
-    private Competitor[] teamMember;
-    private int[] scores;
-
-    public HackathonTeam(int teamNumber, String teamName, String university, Category category,
-                         Competitor teamLeader, Competitor[] teamMember, int[] scores) {
+    public Team(int teamNumber, String teamName, String university, Category category, Competitor teamLeader, Competitor[] teamMember, int[] scores) {
         this.teamNumber = teamNumber;
         this.teamName = teamName;
         this.university = university;
@@ -76,32 +79,32 @@ public class HackathonTeam {
         this.scores = scores;
     }
 
-    public double getOverallScore() {
-        //return 5; // Stage 4
-
-        if (scores == null || scores.length == 0) {
-            return 0;
-        }
-
-        // Calculate weighted average (more complex than simple average)
-        double sum = 0;
-        double totalWeight = 0;
-
-        // Assign different weights to different score positions
-        // Higher weights for middle scores (judges tend to be more careful with middle scores)
-        double[] weights = {0.15, 0.25, 0.20, 0.25, 0.15}; // weights for 5 scores
-
-        for (int i = 0; i < scores.length; i++) {
-            double weight = (i < weights.length) ? weights[i] : 1.0; // default weight if more scores
-            sum += scores[i] * weight;
-            totalWeight += weight;
-        }
-
-        double average = sum / totalWeight;
-
-        // Round to 1 decimal place
-        return Math.round(average * 10) / 10.0;
-    }
+    public abstract double getOverallScore(); // {
+//        return 5; // Stage 4
+//
+//        if (scores == null || scores.length == 0) {
+//            return 0;
+//        }
+//
+//        // Calculate weighted average (more complex than simple average)
+//        double sum = 0;
+//        double totalWeight = 0;
+//
+//        // Assign different weights to different score positions
+//        // Higher weights for middle scores (judges tend to be more careful with middle scores)
+//        double[] weights = {0.15, 0.25, 0.20, 0.25, 0.15}; // weights for 5 scores
+//
+//        for (int i = 0; i < scores.length; i++) {
+//            double weight = (i < weights.length) ? weights[i] : 1.0; // default weight if more scores
+//            sum += scores[i] * weight;
+//            totalWeight += weight;
+//        }
+//
+//        double average = sum / totalWeight;
+//
+//        // Round to 1 decimal place
+//        return Math.round(average * 10) / 10.0;
+//    }
 
     // Method that get full details.
     public String getFullDetails() {
