@@ -77,7 +77,30 @@ public class HackathonTeam {
     }
 
     public double getOverallScore() {
-        return 5;
+        //return 5; // Stage 4
+
+        if (scores == null || scores.length == 0) {
+            return 0;
+        }
+
+        // Calculate weighted average (more complex than simple average)
+        double sum = 0;
+        double totalWeight = 0;
+
+        // Assign different weights to different score positions
+        // Higher weights for middle scores (judges tend to be more careful with middle scores)
+        double[] weights = {0.15, 0.25, 0.20, 0.25, 0.15}; // weights for 5 scores
+
+        for (int i = 0; i < scores.length; i++) {
+            double weight = (i < weights.length) ? weights[i] : 1.0; // default weight if more scores
+            sum += scores[i] * weight;
+            totalWeight += weight;
+        }
+
+        double average = sum / totalWeight;
+
+        // Round to 1 decimal place
+        return Math.round(average * 10) / 10.0;
     }
 
     // Method that get full details.
