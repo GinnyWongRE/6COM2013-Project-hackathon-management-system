@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -16,17 +17,56 @@ public class HackathonManager {
     /**
      * Main coordination method - runs the entire system
      */
+//    public void run() {
+//        System.out.println("=== HACKATHON MANAGEMENT SYSTEM - STAGE 5 ===");
+//        System.out.println("Loading team data...\n");
+//
+//        // Step 1: Load teams from CSV
+//        loadTeamData();
+//
+//        // Step 2: Display main menu
+//        displayMainMenu();
+//
+//        scanner.close();
+//    }
+    // Stage 6
     public void run() {
-        System.out.println("=== HACKATHON MANAGEMENT SYSTEM - STAGE 5 ===");
+        System.out.println("=== HACKATHON MANAGEMENT SYSTEM - STAGE 6 ===");
         System.out.println("Loading team data...\n");
 
-        // Step 1: Load teams from CSV
+        // Load team data
         loadTeamData();
 
-        // Step 2: Display main menu
-        displayMainMenu();
+        System.out.println("Total teams loaded: " + teamList.getTotalTeams() + "\n");
 
-        scanner.close();
+        // Ask user if they want GUI or console
+        System.out.println("Choose interface:");
+        System.out.println("1. Graphical User Interface (GUI)");
+        System.out.println("2. Console Interface");
+        System.out.print("Choose (1-2): ");
+
+        try {
+            int choice = Integer.parseInt(scanner.nextLine().trim());
+
+            if (choice == 1) {
+                // Launch GUI
+                HackathonController controller = new HackathonController(teamList);
+                SwingUtilities.invokeLater(() -> {
+                    HackathonGUI gui = new HackathonGUI(controller);
+                    gui.setVisible(true);
+                });
+                System.out.println("GUI launched successfully!");
+                // Don't close scanner here as GUI is running
+            } else {
+                // Use existing console menu
+                displayMainMenu();
+                scanner.close();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid choice. Using console interface.");
+            displayMainMenu();
+            scanner.close();
+        }
     }
 
     /**
@@ -101,7 +141,7 @@ public class HackathonManager {
 
         try {
             int teamID = Integer.parseInt(scanner.nextLine().trim());
-            HackathonTeam team = teamList.getTeamByID(teamID);
+            Team team = teamList.getTeamByID(teamID);
 
             if (team != null) {
                 System.out.println("\n=== TEAM FOUND ===");
@@ -140,8 +180,8 @@ public class HackathonManager {
         System.out.println("\n" + teamList.getSummaryStatistics());
 
         // Display highest and lowest scoring teams
-        HackathonTeam highest = teamList.getHighestScoringTeam();
-        HackathonTeam lowest = teamList.getLowestScoringTeam();
+        Team highest = teamList.getHighestScoringTeam();
+        Team lowest = teamList.getLowestScoringTeam();
 
         if (highest != null) {
             System.out.println("Highest Scoring Team:");

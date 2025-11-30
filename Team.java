@@ -75,7 +75,7 @@ public abstract class Team {
         return scores;
     }
 
-    public void setScoreArray(int[] scores) {
+    public void setScores(int[] scores) {
         this.scores = scores;
     }
 
