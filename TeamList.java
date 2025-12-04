@@ -276,4 +276,21 @@ public class TeamList {
             System.err.println("Error writing report to file: " + e.getMessage());
         }
     }
+    
+    public void sortByScore() {
+        teams.sort((t1, t2) -> Double.compare(t2.getOverallScore(), t1.getOverallScore()));
+    }
+
+    public void sortByName() {
+        teams.sort((t1, t2) -> t1.getTeamName().compareToIgnoreCase(t2.getTeamName()));
+    }
+
+    public void sortByCategory() {
+        teams.sort((t1, t2) -> t1.getCategory().getCategoryName()
+                .compareToIgnoreCase(t2.getCategory().getCategoryName()));
+    }
+
+    public void sortByTeamNumber() {
+        teams.sort((t1, t2) -> Integer.compare(t1.getTeamNumber(), t2.getTeamNumber()));
+    }
 }

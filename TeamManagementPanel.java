@@ -70,6 +70,11 @@ public class TeamManagementPanel extends JPanel {
         viewDetailsButton.addActionListener(e -> viewSelectedTeamDetails());
         actionPanel.add(viewDetailsButton);
 
+        // Add the edit button here (AFTER actionPanel is created)
+        JButton editButton = new JButton("Edit Team Details");
+        editButton.addActionListener(e -> editTeamDetails());
+        actionPanel.add(editButton);
+
         JButton removeButton = new JButton("Remove Selected Team");
         removeButton.addActionListener(e -> removeSelectedTeam());
         actionPanel.add(removeButton);
@@ -94,13 +99,14 @@ public class TeamManagementPanel extends JPanel {
         }
     }
 
+    // Update the sortTeams method
     private void sortTeams() {
         String sortBy = (String) sortComboBox.getSelectedItem();
 
         switch (sortBy) {
             case "Team Number":
-                // Default order (by team number)
-                refreshTeamTable();
+                controller.sortTeamsByTeamNumber();  // Call the controller method
+                refreshTeamTable();  // Refresh to show sorted data
                 break;
             case "Team Name":
                 controller.sortTeamsByName();
@@ -150,6 +156,43 @@ public class TeamManagementPanel extends JPanel {
                         team.getFullDetails(),
                         "Team Details - " + team.getTeamName(),
                         JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a team first.",
+                    "No Team Selected",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void editTeamDetails() {
+        int selectedRow = teamTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            int teamID = (int) tableModel.getValueAt(selectedRow, 0);
+            Team team = controller.getTeamByID(teamID);
+
+            if (team != null) {
+                // Create edit dialog
+                JPanel panel = new JPanel(new GridLayout(0, 2));
+                JTextField nameField = new JTextField(team.getTeamName());
+                JTextField uniField = new JTextField(team.getUniversity());
+
+                panel.add(new JLabel("Team Name:"));
+                panel.add(nameField);
+                panel.add(new JLabel("University:"));
+                panel.add(uniField);
+
+                int result = JOptionPane.showConfirmDialog(
+                        this, panel, "Edit Team Details",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+                );
+
+                if (result == JOptionPane.OK_OPTION) {
+                    team.setTeamName(nameField.getText());
+                    team.setUniversity(uniField.getText());
+                    refreshTeamTable();
+                    JOptionPane.showMessageDialog(this, "Team details updated!");
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this,

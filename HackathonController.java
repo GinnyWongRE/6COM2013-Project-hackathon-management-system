@@ -27,19 +27,19 @@ public class HackathonController {
 
     // Sorting methods
     public void sortTeamsByScore() {
-        ArrayList<Team> teams = teamList.getAllTeams();
-        teams.sort((t1, t2) -> Double.compare(t2.getOverallScore(), t1.getOverallScore()));
+        teamList.sortByScore();
     }
 
     public void sortTeamsByName() {
-        ArrayList<Team> teams = teamList.getAllTeams();
-        teams.sort((t1, t2) -> t1.getTeamName().compareToIgnoreCase(t2.getTeamName()));
+        teamList.sortByName();
     }
 
     public void sortTeamsByCategory() {
-        ArrayList<Team> teams = teamList.getAllTeams();
-        teams.sort((t1, t2) -> t1.getCategory().getCategoryName()
-                .compareToIgnoreCase(t2.getCategory().getCategoryName()));
+        teamList.sortByCategory();
+    }
+
+    public void sortTeamsByTeamNumber() {
+        teamList.sortByTeamNumber();
     }
 
     // Filtering methods
