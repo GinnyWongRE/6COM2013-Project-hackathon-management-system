@@ -1,0 +1,14 @@
+teamNumber,teamName,university,category,leaderName,leaderEmail,leaderStudentID,leaderDOB,score1,score2,score3,score4,score5
+100,Team Innovate,University of Malaya,Web Development,Ahmad Faris,ahmad@um.edu.my,10001,2000-05-15,4,5,4,5,5
+101,Cyber Titans,Universiti Teknologi Malaysia,Cybersecurity,Sarah Lim,sarah@utm.edu.my,20001,1999-12-08,3,4,3,4,4
+102,AI Pioneers,Universiti Kebangsaan Malaysia,Artificial Intelligence,David Wong,david@ukm.edu.my,30001,2000-09-18,5,5,5,4,5
+103,Code Warriors,Universiti Sains Malaysia,Mobile Applications,Lee Chen,lee@usm.edu.my,40001,2001-03-22,4,4,4,3,4
+104,Data Dreamers,Universiti Teknologi MARA,Artificial Intelligence,Nurul Huda,nurul@uitm.edu.my,50001,2000-07-30,5,4,5,4,5
+105,Green Techies,Universiti Putra Malaysia,Web Development,Raj Kumar,raj@upm.edu.my,60001,2001-01-14,3,3,4,4,3
+106,Quantum Hackers,Universiti Malaysia Sabah,Cybersecurity,Wei Ling,wei@ums.edu.my,70001,2000-11-05,5,5,4,5,4
+107,Pixel Coders,Multimedia University,Mobile Applications,Mike Tan,mike@mmu.edu.my,80001,1999-08-19,4,5,4,5,4
+108,Byte Builders,Universiti Malaysia Perlis,Web Development,Aisha Hassan,aisha@unimap.edu.my,90001,2001-04-12,4,3,4,4,4
+109,Logic Legends,Universiti Tun Hussein Onn Malaysia,Cybersecurity,James Lee,james@uthm.edu.my,100001,2000-02-28,3,4,4,3,4
+110,Tech Titans,Universiti Malaysia Terengganu,Mobile Applications,Priya Devi,priya@umt.edu.my,110001,2001-06-17,4,4,3,4,3
+111,Data Wizards,Universiti Malaysia Pahang,Artificial Intelligence,Siti Aminah,siti@ump.edu.my,120001,2000-10-08,5,4,4,5,4
+112,Code Crusaders,Universiti Malaysia Kelantan,Web Development,Kumar Raj,kumar@umk.edu.my,130001,1999-07-25,3,4,3,3,4

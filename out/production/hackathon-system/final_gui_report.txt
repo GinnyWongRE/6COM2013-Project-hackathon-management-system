@@ -1,0 +1,61 @@
+=== HACKATHON TEAMS FULL REPORT ===
+
+Team ID 100, name Team Innovate (University of Malaya).
+Team Innovate is competing in the Web Development category and received scores [4, 5, 4, 5, 5], resulting in an overall score of 4.6
+
+Team ID 101, name Cyber Titans (Universiti Teknologi Malaysia).
+Cyber Titans is competing in the Cybersecurity category and received scores [3, 4, 3, 4, 4], resulting in an overall score of 3.6
+
+Team ID 102, name AI Pioneers (Universiti Kebangsaan Malaysia).
+AI Pioneers is competing in the Artificial Intelligence category and received scores [5, 5, 5, 4, 5], resulting in an overall score of 4.8
+
+Team ID 103, name Code Warriors (Universiti Sains Malaysia).
+Code Warriors is competing in the Mobile Applications category and received scores [4, 4, 4, 3, 4], resulting in an overall score of 3.8
+
+Team ID 104, name Data Dreamers (Universiti Teknologi MARA).
+Data Dreamers is competing in the Artificial Intelligence category and received scores [5, 4, 5, 4, 5], resulting in an overall score of 4.5
+
+Team ID 105, name Green Techies (Universiti Putra Malaysia).
+Green Techies is competing in the Web Development category and received scores [3, 3, 4, 4, 3], resulting in an overall score of 3.4
+
+Team ID 106, name Quantum Hackers (Universiti Malaysia Sabah).
+Quantum Hackers is competing in the Cybersecurity category and received scores [5, 5, 4, 5, 4], resulting in an overall score of 4.6
+
+Team ID 107, name Pixel Coders (Multimedia University).
+Pixel Coders is competing in the Mobile Applications category and received scores [4, 5, 4, 5, 4], resulting in an overall score of 4.4
+
+Team ID 108, name Byte Builders (Universiti Malaysia Perlis).
+Byte Builders is competing in the Web Development category and received scores [4, 3, 4, 4, 4], resulting in an overall score of 3.8
+
+Team ID 109, name Logic Legends (Universiti Tun Hussein Onn Malaysia).
+Logic Legends is competing in the Cybersecurity category and received scores [3, 4, 4, 3, 4], resulting in an overall score of 3.6
+
+Team ID 110, name Tech Titans (Universiti Malaysia Terengganu).
+Tech Titans is competing in the Mobile Applications category and received scores [4, 4, 3, 4, 3], resulting in an overall score of 3.6
+
+Team ID 111, name Data Wizards (Universiti Malaysia Pahang).
+Data Wizards is competing in the Artificial Intelligence category and received scores [5, 4, 4, 5, 4], resulting in an overall score of 4.4
+
+Team ID 112, name Code Crusaders (Universiti Malaysia Kelantan).
+Code Crusaders is competing in the Web Development category and received scores [3, 4, 3, 3, 4], resulting in an overall score of 3.4
+
+
+=== HIGHEST SCORING TEAM ===
+Team ID 102, name AI Pioneers (Universiti Kebangsaan Malaysia).
+AI Pioneers is competing in the Artificial Intelligence category and received scores [5, 5, 5, 4, 5], resulting in an overall score of 4.8
+
+=== SUMMARY STATISTICS ===
+Total Teams: 13
+Average Overall Score: 4.0
+Highest Overall Score: 4.8
+Lowest Overall Score: 3.4
+Total Individual Scores: 65
+
+=== SCORE FREQUENCY REPORT ===
+Score | Frequency
+------|----------
+1     | 0
+2     | 0
+3     | 14
+4     | 34
+5     | 17
