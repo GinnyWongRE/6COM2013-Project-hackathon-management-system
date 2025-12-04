@@ -45,32 +45,41 @@ public class HackathonManager {
         System.out.println("Total teams loaded: " + teamList.getTotalTeams() + "\n");
 
         // Ask user if they want GUI or console
-        System.out.println("Choose interface:");
-        System.out.println("1. Graphical User Interface (GUI)");
-        System.out.println("2. Console Interface");
-        System.out.print("Choose (1-2): ");
+        boolean validChoice = false;
 
-        try {
-            int choice = Integer.parseInt(scanner.nextLine().trim());
+        while (!validChoice) {
+            System.out.println("Choose interface:");
+            System.out.println("1. Graphical User Interface (GUI)");
+            System.out.println("2. Console Interface");
+            System.out.print("Choose (1-2): ");
 
-            if (choice == 1) {
-                // Launch GUI
-                HackathonController controller = new HackathonController(teamList);
-                SwingUtilities.invokeLater(() -> {
-                    HackathonGUI gui = new HackathonGUI(controller);
-                    gui.setVisible(true);
-                });
-                System.out.println("GUI launched successfully!");
-                // Don't close scanner here as GUI is running
-            } else {
-                // Use existing console menu
-                displayMainMenu();
-                scanner.close();
+            try {
+                int choice = Integer.parseInt(scanner.nextLine().trim());
+
+                switch (choice) {
+                    case 1:
+                        // Launch GUI
+                        validChoice = true;
+                        // Launch GUI
+                        HackathonController controller = new HackathonController(teamList);
+                        SwingUtilities.invokeLater(() -> {
+                            HackathonGUI gui = new HackathonGUI(controller);
+                            gui.setVisible(true);
+                        });
+                        System.out.println("GUI launched successfully!");
+                        break;
+                    case 2:
+                        // Use console interface
+                        validChoice = true;
+                        displayMainMenu();
+                        scanner.close();
+                        break;
+                    default:
+                        System.out.println("Invalid option. Please choose 1 or 2.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number (1 or 2).\n");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid choice. Using console interface.");
-            displayMainMenu();
-            scanner.close();
         }
     }
 

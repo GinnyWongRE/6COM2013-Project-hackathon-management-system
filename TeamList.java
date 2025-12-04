@@ -231,6 +231,18 @@ public class TeamList {
         }
         stats.append("Total Individual Scores: ").append(totalScores).append("\n");
 
+        // Display highest and lowest scoring teams
+        Team highest = getHighestScoringTeam();
+        Team lowest = getLowestScoringTeam();
+
+        if (highest != null) {
+            stats.append("\nHighest Scoring Team: ").append(highest.getShortDetails()).append("\n");
+        }
+
+        if (lowest != null) {
+            stats.append("Lowest Scoring Team: ").append(lowest.getShortDetails()).append("\n");
+        }
+
         return stats.toString();
     }
 
